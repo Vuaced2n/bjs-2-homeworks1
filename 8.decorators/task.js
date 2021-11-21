@@ -1,3 +1,5 @@
+//task 1
+
 function cachingDecoratorNew(func) {
   let cache = [];
   function wrapper(...rest) {
@@ -23,20 +25,32 @@ function cachingDecoratorNew(func) {
   return wrapper;
 }
 
+
+// task 2
+
 function debounceDecoratorNew(func, ms) {
+
   let timeout;
-  func(...rest);
-  let flag = true;
-  return function (...rest) {
-    clearTimeout(timeout);
+  let repeatCall = false;
+
+  function wrapper(...rest) {
+
+    if (!repeatCall) {
+      func.apply(this, ...rest);
+      repeatCall = true;
+      return;
+    }
+    clearTimeout(timeout)
     timeout = setTimeout(() => {
-      if (!flag) {
-        func.call(this, ...rest); 
-        flag = true;
-      }
-    }, ms);
-  };   
+      repeatCall = false
+      func.apply(this, ...rest)
+    }, ms)
+  }
+  return wrapper;
 }
+
+
+//task 3
 
 function debounceDecorator2(debounceDecoratorNew) {
   let count = 0;
